@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabriel Henrique - Cybersecurity</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --bg-color-secondary: #111;
+            --text-color: #00ff00;
+            --text-color-muted: rgba(0, 255, 0, 0.7);
+            --accent-color: #00ffff;
+            --danger-color: #ff0066;
+            --link-bg-color: rgba(0, 255, 0, 0.1);
+            --link-hover-bg-color: rgba(0, 255, 255, 0.2);
+            --gradient-primary: linear-gradient(45deg, #00ff00, #00ffff);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease;
+            will-change: transform;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .profile-image-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-image-container::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            z-index: -1;
+            opacity: 0.5;
+            animation: rotate 4s linear infinite;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-color);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px var(--text-color);
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: var(--text-color-muted);
+            margin-bottom: 1rem;
+        }
+
+        .bio {
+            font-size: 1rem;
+            max-width: 400px;
+            margin: 0 auto 2rem;
+            line-height: 1.5;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--link-bg-color);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .links a:nth-child(1) { animation-delay: 0.1s; }
+        .links a:nth-child(2) { animation-delay: 0.2s; }
+        .links a:nth-child(3) { animation-delay: 0.3s; }
+
+        .link:hover {
+            background-color: var(--link-hover-bg-color);
+            transform: translateY(-3px);
+            border-color: var(--accent-color);
+            letter-spacing: 1px;
+            padding-left: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .link:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 255, 0, 0.5);
+        }
+
+        .link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .link:hover::before {
+            left: 100%;
+        }
+
+        .link-icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--accent-color);
+            transition: transform 0.3s ease;
+        }
+
+        .link:hover .link-icon {
+            transform: scale(1.2);
+        }
+
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 var(--danger-color);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 var(--accent-color);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(19px, 9999px, 32px, 0); }
+            5% { clip: rect(36px, 9999px, 78px, 0); }
+            10% { clip: rect(68px, 9999px, 95px, 0); }
+            15% { clip: rect(90px, 9999px, 32px, 0); }
+            20% { clip: rect(65px, 9999px, 3px, 0); }
+            25% { clip: rect(6px, 9999px, 32px, 0); }
+            30% { clip: rect(23px, 9999px, 90px, 0); }
+            35% { clip: rect(56px, 9999px, 18px, 0); }
+            40% { clip: rect(89px, 9999px, 24px, 0); }
+            45% { clip: rect(31px, 9999px, 84px, 0); }
+            50% { clip: rect(7px, 9999px, 69px, 0); }
+            55% { clip: rect(42px, 9999px, 12px, 0); }
+            60% { clip: rect(87px, 9999px, 38px, 0); }
+            65% { clip: rect(53px, 9999px, 6px, 0); }
+            70% { clip: rect(28px, 9999px, 95px, 0); }
+            75% { clip: rect(4px, 9999px, 51px, 0); }
+            80% { clip: rect(62px, 9999px, 77px, 0); }
+            85% { clip: rect(94px, 9999px, 35px, 0); }
+            90% { clip: rect(48px, 9999px, 96px, 0); }
+            95% { clip: rect(82px, 9999px, 61px, 0); }
+            100% { clip: rect(17px, 9999px, 17px, 0); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .profile-image-container {
+                width: 120px;
+                height: 120px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .link {
+                padding: 0.75rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .link,
+            .profile-image,
+            .container,
+            .profile-image-container::after {
+                animation: none;
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="container">
+        <header>
+            <div class="profile-image-container">
+                <img src="https://drive.google.com/file/d/1S32CkCktivUPR4nUfooNpahevAEgSnjI" alt="Gabriel Henrique" class="profile-image">
+            </div>
+            <h1 class="glitch" data-text="Gabriel Henrique">Gabriel Henrique</h1>
+            <p>Cybersecurity Specialist</p>
+            <div class="bio">
+                Dedicated to securing digital frontiers and exploring the depths of cybersecurity. Passionate about ethical hacking and system protection.
+            </div>
+        </header>
+        <main id="links-container" class="links">
+            <!-- Links will be inserted here by JavaScript -->
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        const links = [
+            { name: 'GitHub', icon: 'github', url: 'https://github.com/G4br1e3l' },
+            { name: 'LinkedIn', icon: 'linkedin', url: 'https://www.linkedin.com/in/gabriel-henrique-de-jesus-silva' },
+            { name: 'Portfolio', icon: 'globe', url: 'https://g4br1e3l.github.io/Portifolio/' }
+        ];
+
+        const svgIcons = {
+            github: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>',
+            linkedin: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>',
+            globe: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm9.949 11h-3.946c-.092-2.801-.556-5.297-1.291-7.203C19.047 5.197 21.112 7.847 21.949 11zM12 2.551c1.454 0 3.039 2.455 3.479 8.449H8.521C8.961 5.006 10.546 2.551 12 2.551zM8.288 3.797C7.553 5.703 7.089 8.199 6.997 11H3.051c.837-3.153 2.902-5.803 5.237-7.203zM3.051 13h3.946c.092 2.801.556 5.297 1.291 7.203C5.953 18.803 3.888 16.153 3.051 13zm8.949 8.449c-1.454 0-3.039-2.455-3.479-8.449h6.958C15.039 18.994 13.454 21.449 12 21.449zm3.712-1.247c.735-1.906 1.199-4.402 1.291-7.203h3.946c-.837 3.153-2.902 5.803-5.237 7.203z"/></svg>'
+        };
+
+        let clickCount = 0;
+        const profileImage = document.querySelector('.profile-image-container');
+        profileImage.addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 5) {
+                document.body.style.animation = 'glitch 0.3s infinite';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                    clickCount = 0;
+                }, 1000);
+            }
+        });
+
+        function createLinkElement(link, index) {
+            const a = document.createElement('a');
+            a.href = link.url;
+            a.className = 'link';
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            
+            // Add tooltip
+            a.setAttribute('title', `Visit my ${link.name}`);
+            
+            a.innerHTML = `
+                <span class="glitch" data-text="${link.name}">${link.name}</span>
+                <span class="link-icon">${svgIcons[link.icon]}</span>
+            `;
+            
+            return a;
+        }
+
+        function populateLinks() {
+            const container = document.getElementById('links-container');
+            links.forEach((link, index) => {
+                const linkElement = createLinkElement(link, index);
+                container.appendChild(linkElement);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateLinks();
+            
+            // Initialize particles.js with improved configuration
+            particlesJS('particles-js', {
+                particles: {
+                    number: {
+                        value: 50,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: ["#00ff00", "#00ffff", "#ff00ff"]
+                    },
+                    shape: {
+                        type: "circle"
+                    },
+                    opacity: {
+                        value: 0.5,
+                        random: true,
+                        animation: {
+                            enable: true,
+                            speed: 1
+                        }
+                    },
+                    size: {
+                        value: 3,
+                        random: true
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#00ff00",
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 3,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "bounce",
+                        bounce: true
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: "repulse"
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: "push"
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        repulse: {
+                            distance: 100,
+                            duration: 0.4
+                        },
+                        push: {
+                            particles_nb: 4
+                        }
+                    }
+                },
+                retina_detect: true
+            });
+        });
+
+        // Matrix rain effect with improved performance
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.body.appendChild(canvas);
+
+        canvas.style.position = 'fixed';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.zIndex = '-2';
+        canvas.style.opacity = '0.3';
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const columns = Math.floor(canvas.width / 20);
+        const drops = new Array(columns).fill(1);
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = '15px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+                ctx.fillText(text, i * 20, drops[i] * 20);
+
+                if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        requestAnimationFrame(draw);
+    </script>
+</body>
+</html>
